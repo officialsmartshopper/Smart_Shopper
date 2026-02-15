@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聯絡我們 | Contact Us - Smart Shopper UK</title>
+    <style>
+        body { font-family: Arial, "Microsoft JhengHei", sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .lang-toggle { text-align: right; margin-bottom: 20px; }
+        .lang-toggle button { padding: 5px 15px; margin-left: 5px; cursor: pointer; background: #3498db; color: white; border: none; border-radius: 4px; }
+        .lang-toggle button.active { background: #2c3e50; }
+        .zh { display: block; }
+        .en { display: none; font-style: italic; color: #555; border-left: 3px solid #3498db; padding-left: 15px; margin-top: 5px; }
+        .show-en .zh { display: none; }
+        .show-en .en { display: block; }
+        .nav { margin-bottom: 30px; padding: 15px; background: #f8f9fa; border-radius: 5px; border-bottom: 1px solid #eee; }
+        .nav a { margin-right: 20px; text-decoration: none; color: #0066cc; font-weight: bold; }
+        .nav a:hover { text-decoration: underline; }
+        .contact-box { background: #f0f8ff; padding: 25px; border-radius: 10px; margin: 25px 0; border-left: 5px solid #3498db; }
+        .contact-box h3 { margin-top: 0; color: #2c3e50; font-size: 1.2em; }
+        .contact-box p { margin: 10px 0; }
+        .footer { margin-top: 50px; padding-top: 20px; border-top: 2px solid #eee; font-size: 14px; color: #666; text-align: center; }
+        .email-link { color: #e74c3c; font-weight: bold; text-decoration: none; }
+        .email-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="lang-toggle">
+        <button onclick="showLang('zh')" id="btn-zh" class="active">繁體中文</button>
+        <button onclick="showLang('en')" id="btn-en">English</button>
+    </div>
+
+    <nav class="nav">
+        <a href="index.html">← 返回首頁 | Back to Home</a>
+        <a href="privacy-policy.html">隱私政策 | Privacy Policy</a>
+    </nav>
+
+    <h1>聯絡我們 <span style="font-size: 0.6em; color: #7f8c8d;">Contact Us</span></h1>
+    
+    <p class="zh">我們隨時為你提供協助！</p>
+    <p class="en" style="display: none;">We are here to help you!</p>
+
+    <div class="contact-box">
+        <h3>📧 電子郵件 | Email</h3>
+        <p class="zh">一般諮詢：<a href="mailto:official.smartshopper@gmail.com" class="email-link">official.smartshopper@gmail.com</a></p>
+        <p class="en">General Inquiries: <a href="mailto:official.smartshopper@gmail.com" class="email-link">official.smartshopper@gmail.com</a></p>
+        
+        <p class="zh">商務合作：<a href="mailto:official.smartshopper@gmail.com" class="email-link">official.smartshopper@gmail.com</a></p>
+        <p class="en">Business Partnerships: <a href="mailto:official.smartshopper@gmail.com" class="email-link">official.smartshopper@gmail.com</a></p>
+        
+        <p class="zh">隱私問題：<a href="mailto:official.smartshopper@gmail.com" class="email-link">official.smartshopper@gmail.com</a></p>
+        <p class="en">Privacy Concerns: <a href="mailto:official.smartshopper@gmail.com" class="email-link">official.smartshopper@gmail.com</a></p>
+    </div>
+
+    <div class="contact-box">
+        <h3>📍 地址 | Address</h3>
+        <p class="zh">Smart Shopper UK<br>倫敦, 英國</p>
+        <p class="en">Smart Shopper UK<br>London, United Kingdom</p>
+    </div>
+
+    <div class="contact-box">
+        <h3>⏰ 工作時間 | Working Hours</h3>
+        <p class="zh">週一至週五：9:00 - 18:00 (GMT)<br>週末：休息</p>
+        <p class="en">Monday to Friday: 9:00 AM - 6:00 PM (GMT)<br>Weekends: Closed</p>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Smart Shopper UK. All rights reserved. | 版權所有</p>
+        <p><a href="index.html">首頁 Home</a> | <a href="privacy-policy.html">隱私 Privacy</a></p>
+    </footer>
+
+    <script>
+        function showLang(lang) {
+            document.body.className = lang === 'en' ? 'show-en' : '';
+            document.getElementById('btn-zh').className = lang === 'zh' ? 'active' : '';
+            document.getElementById('btn-en').className = lang === 'en' ? 'active' : '';
+        }
+    </script>
+</body>
+</html>
