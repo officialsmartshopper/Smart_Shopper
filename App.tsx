@@ -1,51 +1,93 @@
+import { lazy, Suspense } from 'react';
+
+// 關鍵元件：立即載入
 import TopNav from '@/sections/TopNav';
 import MainHeader from '@/sections/MainHeader';
 import CategoryNav from '@/sections/CategoryNav';
-import HeroCarousel from '@/sections/HeroCarousel';
-import NewsSection from '@/sections/NewsSection';
-import HotProducts from '@/sections/HotProducts';
-import ReviewsSection from '@/sections/ReviewsSection';
-import FuelSection from '@/sections/FuelSection';
-import CarSection from '@/sections/CarSection';
-import Footer from '@/sections/Footer';
+
+// 非關鍵元件：延遲載入（Code Splitting）
+const HeroCarousel = lazy(() => import('@/sections/HeroCarousel'));
+const NewsSection = lazy(() => import('@/sections/NewsSection'));
+const HotProducts = lazy(() => import('@/sections/HotProducts'));
+const ReviewsSection = lazy(() => import('@/sections/ReviewsSection'));
+const FuelSection = lazy(() => import('@/sections/FuelSection'));
+const CarSection = lazy(() => import('@/sections/CarSection'));
+const Footer = lazy(() => import('@/sections/Footer'));
+
+// 載入中元件
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center py-12">
+      <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#0066FF] border-t-transparent"></div>
+    </div>
+  );
+}
+
+// 區塊載入骨架屏
+function SectionSkeleton() {
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8 animate-pulse">
+      <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[...Array(8)].map((_, i) => (
+          <div key={i} className="bg-gray-200 rounded-xl h-64"></div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function App() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Fixed Navigation */}
+      {/* Fixed Navigation - 立即載入 */}
       <TopNav />
       
-      {/* Header */}
+      {/* Header - 立即載入 */}
       <div className="pt-10">
         <MainHeader />
       </div>
       
-      {/* Category Navigation */}
+      {/* Category Navigation - 立即載入 */}
       <CategoryNav />
       
-      {/* Main Content */}
+      {/* Main Content - 延遲載入 */}
       <main>
         {/* Hero Carousel */}
-        <HeroCarousel />
+        <Suspense fallback={<LoadingSpinner />}>
+          <HeroCarousel />
+        </Suspense>
         
         {/* News Section */}
-        <NewsSection />
+        <Suspense fallback={<SectionSkeleton />}>
+          <NewsSection />
+        </Suspense>
         
         {/* Hot Products */}
-        <HotProducts />
+        <Suspense fallback={<SectionSkeleton />}>
+          <HotProducts />
+        </Suspense>
         
         {/* Reviews Section */}
-        <ReviewsSection />
+        <Suspense fallback={<SectionSkeleton />}>
+          <ReviewsSection />
+        </Suspense>
         
         {/* Fuel Price Section */}
-        <FuelSection />
+        <Suspense fallback={<SectionSkeleton />}>
+          <FuelSection />
+        </Suspense>
         
         {/* Car Section */}
-        <CarSection />
+        <Suspense fallback={<SectionSkeleton />}>
+          <CarSection />
+        </Suspense>
       </main>
       
       {/* Footer */}
-      <Footer />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Footer />
+      </Suspense>
     </div>
   );
 }

@@ -1,12 +1,92 @@
-import { useState } from 'react';
+import { useState, memo, useMemo } from 'react';
 import { Star, TrendingUp, Package, ExternalLink } from 'lucide-react';
 import { hotProducts, dealProducts } from '@/data/mockData';
-import { AffiliateLink, BuyNowButton } from '@/components/AffiliateLink';
-import { buildAmazonLink } from '@/config/affiliates';
+import { LazyImage } from '@/components/LazyImage';
+import type { Product } from '@/types';
+
+// 產品卡片元件 - 使用 memo 避免不必要的重新渲染
+const ProductCard = memo(({ product, index }: { product: Product; index: number }) => {
+  return (
+    <div
+      className="group bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:border-[#0066FF]/30 transition-all duration-300 hover:-translate-y-1"
+      style={{
+        animation: `slideUp 0.5s ease-out ${index * 0.05}s both`,
+      }}
+    >
+      {/* Product Image - 使用懶加載 */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
+        <LazyImage
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        {product.discount && (
+          <span className="absolute top-2 right-2 ss-badge-discount">-{product.discount}%</span>
+        )}
+        {product.isHot && (
+          <span className="absolute top-2 left-2 ss-badge-hot">HOT</span>
+        )}
+        {product.isNew && (
+          <span className="absolute top-2 left-2 ss-badge-new">NEW</span>
+        )}
+        {product.inStock && (
+          <span className="absolute bottom-2 left-2 ss-badge-stock flex items-center gap-1">
+            <Package className="w-3 h-3" />
+            In Stock
+          </span>
+        )}
+      </div>
+
+      {/* Product Info */}
+      <div className="p-3">
+        <span className="text-xs text-gray-400">{product.category}</span>
+        <h3 className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-[#0066FF] transition-colors duration-200 min-h-[40px]">
+          {product.name}
+        </h3>
+        
+        {product.rating && (
+          <div className="flex items-center gap-1 mt-1">
+            <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+            <span className="text-xs text-gray-500">
+              {product.rating} ({product.reviews?.toLocaleString()})
+            </span>
+          </div>
+        )}
+
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-lg font-bold text-[#0066FF]">£{product.price}</span>
+          {product.originalPrice && (
+            <span className="text-sm text-gray-400 line-through">£{product.originalPrice}</span>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-xs text-gray-500">{product.merchant}</span>
+          {product.affiliateLink && (
+            <a
+              href={product.affiliateLink}
+              className="text-xs bg-[#0066FF] text-white px-2 py-1 rounded hover:bg-[#0052CC] transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Buy Now
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default function HotProducts() {
   const [activeTab, setActiveTab] = useState<'trending' | 'deals'>('trending');
-  const products = activeTab === 'trending' ? hotProducts : dealProducts;
+  
+  // 使用 useMemo 避免每次渲染都重新計算
+  const products = useMemo(() => {
+    return activeTab === 'trending' ? hotProducts : dealProducts;
+  }, [activeTab]);
 
   return (
     <section className="bg-white py-10">
@@ -52,89 +132,7 @@ export default function HotProducts() {
         {/* Products Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product, index) => (
-            <div
-              key={product.id}
-              className="group bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:border-[#0066FF]/30 transition-all duration-300 hover:-translate-y-1"
-              style={{
-                animation: `slideUp 0.5s ease-out ${index * 0.05}s both`,
-              }}
-            >
-              {/* Product Image */}
-              <AffiliateLink
-                href={product.affiliateLink || '#'}
-                merchantName={product.merchant}
-                productId={product.id}
-                productName={product.name}
-              >
-                <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {product.discount && (
-                    <span className="absolute top-2 right-2 ss-badge-discount">-{product.discount}%</span>
-                  )}
-                  {product.isHot && (
-                    <span className="absolute top-2 left-2 ss-badge-hot">HOT</span>
-                  )}
-                  {product.isNew && (
-                    <span className="absolute top-2 left-2 ss-badge-new">NEW</span>
-                  )}
-                  {product.inStock && (
-                    <span className="absolute bottom-2 left-2 ss-badge-stock flex items-center gap-1">
-                      <Package className="w-3 h-3" />
-                      In Stock
-                    </span>
-                  )}
-                </div>
-              </AffiliateLink>
-
-              {/* Product Info */}
-              <div className="p-3">
-                <span className="text-xs text-gray-400">{product.category}</span>
-                
-                <AffiliateLink
-                  href={product.affiliateLink || '#'}
-                  merchantName={product.merchant}
-                  productId={product.id}
-                  productName={product.name}
-                >
-                  <h3 className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-[#0066FF] transition-colors duration-200 min-h-[40px]">
-                    {product.name}
-                  </h3>
-                </AffiliateLink>
-                
-                {product.rating && (
-                  <div className="flex items-center gap-1 mt-1">
-                    <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                    <span className="text-xs text-gray-500">
-                      {product.rating} ({product.reviews?.toLocaleString()})
-                    </span>
-                  </div>
-                )}
-
-                <div className="flex items-center gap-2 mt-2">
-                  <span className="text-lg font-bold text-[#0066FF]">£{product.price}</span>
-                  {product.originalPrice && (
-                    <span className="text-sm text-gray-400 line-through">£{product.originalPrice}</span>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-xs text-gray-500">{product.merchant}</span>
-                  {product.affiliateLink && (
-                    <BuyNowButton
-                      href={product.affiliateLink}
-                      merchantName={product.merchant}
-                      productId={product.id}
-                      productName={product.name}
-                      className="text-xs px-3 py-1"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
+            <ProductCard key={product.id} product={product} index={index} />
           ))}
         </div>
       </div>
