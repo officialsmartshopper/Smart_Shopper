@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 217 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 217 100% 95%;
+    --accent-foreground: 217 100% 50%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 100% 50%;
+    --radius: 0.5rem;
+    
+    /* Smart Shopper Brand Colors */
+    --ss-blue: #0066FF;
+    --ss-blue-dark: #0052CC;
+    --ss-blue-light: #E6F0FF;
+    --ss-success: #00C853;
+    --ss-warning: #FF9800;
+    --ss-error: #FF5252;
+    --ss-black: #1A1A1A;
+    --ss-dark: #4A4A4A;
+    --ss-gray: #9E9E9E;
+    --ss-light-gray: #E0E0E0;
+    --ss-bg: #F5F7FA;
+    --ss-white: #FFFFFF;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer components {
+  .ss-btn-primary {
+    @apply bg-[#0066FF] text-white px-6 py-3 rounded-lg font-semibold text-sm;
+    @apply transition-all duration-300;
+    @apply hover:bg-[#0052CC] hover:-translate-y-0.5 hover:shadow-lg;
+    @apply active:scale-[0.98];
+  }
+  
+  .ss-btn-secondary {
+    @apply bg-white text-[#1A1A1A] px-6 py-3 rounded-lg font-semibold text-sm border border-[#E0E0E0];
+    @apply transition-all duration-300;
+    @apply hover:border-[#0066FF] hover:text-[#0066FF];
+  }
+  
+  .ss-card {
+    @apply bg-white border border-[#E0E0E0] rounded-xl overflow-hidden;
+    @apply transition-all duration-300;
+    @apply hover:shadow-xl hover:border-[#0066FF]/30;
+  }
+  
+  .ss-badge-discount {
+    @apply bg-[#FF5252] text-white px-2 py-1 rounded-md text-xs font-bold;
+  }
+  
+  .ss-badge-hot {
+    @apply bg-[#FF9800] text-white px-2 py-1 rounded-md text-xs font-bold;
+  }
+  
+  .ss-badge-new {
+    @apply bg-[#00C853] text-white px-2 py-1 rounded-md text-xs font-bold;
+  }
+  
+  .ss-badge-stock {
+    @apply bg-[#00C853]/10 text-[#00C853] px-2 py-1 rounded-md text-xs font-medium;
+  }
+  
+  .ss-section-title {
+    @apply text-xl font-bold text-[#1A1A1A] flex items-center gap-2;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-in-left {
+    animation: slideInLeft 0.5s ease-out forwards;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  }
+  
+  .text-gradient {
+    background: linear-gradient(135deg, #0066FF 0%, #0052CC 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hover-lift {
+    @apply transition-transform duration-300;
+    @apply hover:-translate-y-1;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(0, 102, 255, 0);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F5F7FA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D0D0D0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B0B0B0;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
